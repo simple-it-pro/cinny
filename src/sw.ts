@@ -49,20 +49,19 @@ self.addEventListener('push', (event: PushEvent) => {
 self.addEventListener('notificationclick', (event: NotificationEvent) => {
   event.notification.close();
   const roomId = event.notification.data?.roomId;
-  const urlPath = roomId ? `/#/room/${roomId}` : '/';
+  const baseUrl = self.registration.scope.replace(/\/$/, '');
+  const targetUrl = roomId ? `${baseUrl}/#/room/${roomId}` : `${baseUrl}/`;
 
   event.waitUntil(
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
-      // Focus existing window and navigate
+      // Focus existing window and navigate via URL change
       for (const client of clientList) {
-        if ('focus' in client) {
-          client.focus();
-          client.postMessage({ type: 'navigate', roomId });
-          return;
+        if ('focus' in client && 'navigate' in client) {
+          return (client as WindowClient).navigate(targetUrl).then((c) => c?.focus());
         }
       }
       // Open new window with room URL
-      return self.clients.openWindow(urlPath);
+      return self.clients.openWindow(targetUrl);
     })
   );
 });
