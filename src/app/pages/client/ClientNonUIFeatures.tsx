@@ -298,16 +298,21 @@ function PushSubscription() {
         }
 
         const userId = mx.getUserId();
-        const baseUrl = mx.getHomeserverUrl();
-        const pushUrl = baseUrl.replace('/_matrix', '').replace(/\/$/, '') + '/push/subscribe';
+        const baseUrl = mx.getHomeserverUrl().replace(/\/$/, '');
+        const pushSubscribeUrl = `${baseUrl}/push/subscribe`;
+        // Synapse requires URL ending with /_matrix/push/v1/notify
+        const pushNotifyUrl = `${baseUrl}/_matrix/push/v1/notify`;
 
-        await fetch(pushUrl, {
+        console.log('Push: subscribing to', pushSubscribeUrl);
+        const subRes = await fetch(pushSubscribeUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ userId, subscription: subscription.toJSON() }),
         });
+        console.log('Push: subscribe response', subRes.status);
 
         // Register HTTP pusher with Synapse
+        console.log('Push: registering pusher with URL', pushNotifyUrl);
         await mx.setPusher({
           pushkey: userId!,
           kind: 'http',
@@ -316,7 +321,7 @@ function PushSubscription() {
           device_display_name: 'Simple Web',
           lang: navigator.language || 'ru',
           data: {
-            url: baseUrl.replace('/_matrix', '').replace(/\/$/, '') + '/push/_matrix/push/v1/notify',
+            url: pushNotifyUrl,
           },
           append: false,
         } as any);
