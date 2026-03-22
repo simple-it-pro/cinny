@@ -88,17 +88,21 @@ function InviteNotifications() {
 
   const notify = useCallback(
     (count: number) => {
-      const noti = new window.Notification('Invitation', {
-        icon: LogoSVG,
-        badge: LogoSVG,
-        body: `You have ${count} new invitation request.`,
-        silent: true,
-      });
+      try {
+        const noti = new window.Notification('Invitation', {
+          icon: LogoSVG,
+          badge: LogoSVG,
+          body: `You have ${count} new invitation request.`,
+          silent: true,
+        });
 
-      noti.onclick = () => {
-        if (!window.closed) navigate(getInboxInvitesPath());
-        noti.close();
-      };
+        noti.onclick = () => {
+          if (!window.closed) navigate(getInboxInvitesPath());
+          noti.close();
+        };
+      } catch {
+        // Mobile browsers don't support Notification constructor
+      }
     },
     [navigate]
   );
@@ -153,21 +157,25 @@ function MessageNotifications() {
       roomId: string;
       eventId: string;
     }) => {
-      const noti = new window.Notification(roomName, {
-        icon: roomAvatar,
-        badge: roomAvatar,
-        body: `New inbox notification from ${username}`,
-        silent: true,
-      });
+      try {
+        const noti = new window.Notification(roomName, {
+          icon: roomAvatar,
+          badge: roomAvatar,
+          body: `New inbox notification from ${username}`,
+          silent: true,
+        });
 
-      noti.onclick = () => {
-        if (!window.closed) navigate(getInboxNotificationsPath());
-        noti.close();
-        notifRef.current = undefined;
-      };
+        noti.onclick = () => {
+          if (!window.closed) navigate(getInboxNotificationsPath());
+          noti.close();
+          notifRef.current = undefined;
+        };
 
-      notifRef.current?.close();
-      notifRef.current = noti;
+        notifRef.current?.close();
+        notifRef.current = noti;
+      } catch {
+        // Mobile browsers don't support Notification constructor
+      }
     },
     [navigate]
   );
