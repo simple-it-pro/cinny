@@ -571,13 +571,13 @@ function AboutSection() {
 }
 
 export const tabText = {
-  APPEARANCE: 'Appearance',
-  NOTIFICATIONS: 'Notifications',
-  EMOJI: 'Emoji',
-  SECURITY: 'Security',
-  ABOUT: 'About',
+  get APPEARANCE() { return i18next.t('settings.tabs.appearance', 'Appearance'); },
+  get NOTIFICATIONS() { return i18next.t('settings.tabs.notifications', 'Notifications'); },
+  get EMOJI() { return i18next.t('settings.tabs.emoji', 'Emoji'); },
+  get SECURITY() { return i18next.t('settings.tabs.security', 'Security'); },
+  get ABOUT() { return i18next.t('settings.tabs.about', 'About'); },
 };
-const tabItems = [
+const getTabItems = () => [
   {
     text: tabText.APPEARANCE,
     iconSrc: SunIC,
@@ -615,7 +615,8 @@ function useWindowToggle(setSelectedTab) {
 
   useEffect(() => {
     const openSettings = (tab) => {
-      const tabItem = tabItems.find((item) => item.text === tab);
+      const currentTabItems = getTabItems();
+      const tabItem = currentTabItems.find((item) => item.text === tab);
       if (tabItem) setSelectedTab(tabItem);
       setIsOpen(true);
     };
@@ -632,6 +633,7 @@ function useWindowToggle(setSelectedTab) {
 
 function Settings() {
   const { t } = useTranslation();
+  const tabItems = getTabItems();
   const [selectedTab, setSelectedTab] = useState(tabItems[0]);
   const [isOpen, requestClose] = useWindowToggle(setSelectedTab);
   const mx = useMatrixClient();

@@ -208,7 +208,93 @@
       "support": "Support",
       "clearCacheReload": "Clear cache & reload",
       "credits": "Credits"
+    },
+    "tabs": {
+      "appearance": "Appearance",
+      "notifications": "Notifications",
+      "emoji": "Emoji",
+      "security": "Security",
+      "about": "About"
     }
+  },
+  "home": {
+    "noRooms": "No Rooms",
+    "noRoomsDescription": "You do not have any rooms yet.",
+    "createRoom": "Create Room",
+    "joinWithAddress": "Join with Address",
+    "messageSearch": "Message Search",
+    "exploreCommunityRooms": "Explore Community Rooms",
+    "rooms": "Rooms"
+  },
+  "direct": {
+    "noMessages": "No Direct Messages",
+    "noMessagesDescription": "You do not have any direct messages yet.",
+    "directMessage": "Direct Message",
+    "createChat": "Create Chat",
+    "chats": "Chats"
+  },
+  "explore": {
+    "addServer": "Add Server",
+    "addServerDescription": "Add server name to explore public communities.",
+    "serverName": "Server Name",
+    "failedToLoadRooms": "Failed to load public rooms. Please try again.",
+    "view": "View",
+    "featured": "Featured",
+    "servers": "Servers",
+    "featuredByClient": "Featured by Client",
+    "featuredByClientDescription": "Find and explore public rooms and spaces featured by client provider.",
+    "featuredSpaces": "Featured Spaces",
+    "featuredRooms": "Featured Rooms",
+    "noFeatured": "No rooms or spaces featured by client provider.",
+    "filterAll": "All",
+    "filterSpaces": "Spaces",
+    "filterRooms": "Rooms",
+    "searchPlaceholder": "Search for keyword",
+    "clear": "Clear",
+    "enter": "Enter",
+    "protocols": "Protocols",
+    "presets": "Presets",
+    "customLimit": "Custom Limit",
+    "perPageItemLimit": "Per Page Item Limit",
+    "changeLimit": "Change Limit",
+    "pageLimit": "Page Limit",
+    "resultsFor": "Results for \"{{term}}\"",
+    "popularCommunities": "Popular Communities",
+    "previousPage": "Previous Page",
+    "nextPage": "Next Page",
+    "noCommunitiesFound": "No communities found!"
+  },
+  "roomMenu": {
+    "invite": "Invite",
+    "copyLink": "Copy Link",
+    "roomSettings": "Room Settings",
+    "leaveRoom": "Leave Room"
+  },
+  "roomSettings": {
+    "tabs": {
+      "general": "General",
+      "members": "Members",
+      "emojis": "Emojis",
+      "permissions": "Permissions",
+      "security": "Security"
+    }
+  },
+  "inbox": {
+    "title": "Inbox",
+    "notifications": "Notifications",
+    "invitations": "Invitations",
+    "decline": "Decline",
+    "accept": "Accept",
+    "directMessages": "Direct Messages",
+    "spaces": "Spaces",
+    "rooms": "Rooms",
+    "noPendingInvitations": "No Pending Invitations",
+    "markAsRead": "Mark as Read",
+    "open": "Open",
+    "filter": "Filter",
+    "allNotifications": "All Notifications",
+    "highlighted": "Highlighted",
+    "noNotifications": "No Notifications"
   },
   "Organisms": {
     "RoomCommon": {

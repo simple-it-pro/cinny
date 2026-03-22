@@ -208,7 +208,93 @@
       "support": "Поддержать",
       "clearCacheReload": "Очистить кеш и перезагрузить",
       "credits": "Благодарности"
+    },
+    "tabs": {
+      "appearance": "Внешний вид",
+      "notifications": "Уведомления",
+      "emoji": "Эмодзи",
+      "security": "Безопасность",
+      "about": "О приложении"
     }
+  },
+  "home": {
+    "noRooms": "Нет комнат",
+    "noRoomsDescription": "У вас пока нет комнат.",
+    "createRoom": "Создать комнату",
+    "joinWithAddress": "Присоединиться по адресу",
+    "messageSearch": "Поиск сообщений",
+    "exploreCommunityRooms": "Обзор комнат сообществ",
+    "rooms": "Комнаты"
+  },
+  "direct": {
+    "noMessages": "Нет личных сообщений",
+    "noMessagesDescription": "У вас пока нет личных сообщений.",
+    "directMessage": "Личное сообщение",
+    "createChat": "Создать чат",
+    "chats": "Чаты"
+  },
+  "explore": {
+    "addServer": "Добавить сервер",
+    "addServerDescription": "Введите имя сервера для просмотра публичных сообществ.",
+    "serverName": "Имя сервера",
+    "failedToLoadRooms": "Не удалось загрузить публичные комнаты. Попробуйте снова.",
+    "view": "Просмотр",
+    "featured": "Рекомендуемое",
+    "servers": "Серверы",
+    "featuredByClient": "Рекомендовано клиентом",
+    "featuredByClientDescription": "Находите и исследуйте публичные комнаты и пространства, рекомендованные поставщиком клиента.",
+    "featuredSpaces": "Рекомендуемые пространства",
+    "featuredRooms": "Рекомендуемые комнаты",
+    "noFeatured": "Нет комнат или пространств, рекомендованных поставщиком клиента.",
+    "filterAll": "Все",
+    "filterSpaces": "Пространства",
+    "filterRooms": "Комнаты",
+    "searchPlaceholder": "Поиск по ключевому слову",
+    "clear": "Очистить",
+    "enter": "Ввод",
+    "protocols": "Протоколы",
+    "presets": "Предустановки",
+    "customLimit": "Свой лимит",
+    "perPageItemLimit": "Элементов на странице",
+    "changeLimit": "Изменить лимит",
+    "pageLimit": "На странице",
+    "resultsFor": "Результаты для «{{term}}»",
+    "popularCommunities": "Популярные сообщества",
+    "previousPage": "Предыдущая страница",
+    "nextPage": "Следующая страница",
+    "noCommunitiesFound": "Сообщества не найдены!"
+  },
+  "roomMenu": {
+    "invite": "Пригласить",
+    "copyLink": "Копировать ссылку",
+    "roomSettings": "Настройки комнаты",
+    "leaveRoom": "Покинуть комнату"
+  },
+  "roomSettings": {
+    "tabs": {
+      "general": "Общие",
+      "members": "Участники",
+      "emojis": "Эмодзи",
+      "permissions": "Права доступа",
+      "security": "Безопасность"
+    }
+  },
+  "inbox": {
+    "title": "Входящие",
+    "notifications": "Уведомления",
+    "invitations": "Приглашения",
+    "decline": "Отклонить",
+    "accept": "Принять",
+    "directMessages": "Личные сообщения",
+    "spaces": "Пространства",
+    "rooms": "Комнаты",
+    "noPendingInvitations": "Нет ожидающих приглашений",
+    "markAsRead": "Отметить прочитанным",
+    "open": "Открыть",
+    "filter": "Фильтр",
+    "allNotifications": "Все уведомления",
+    "highlighted": "Важные",
+    "noNotifications": "Нет уведомлений"
   },
   "Organisms": {
     "RoomCommon": {

@@ -1,4 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Avatar,
   Box,
@@ -54,6 +55,7 @@ type InviteCardProps = {
   onNavigate: (roomId: string) => void;
 };
 function InviteCard({ room, userId, direct, compact, onNavigate }: InviteCardProps) {
+  const { t } = useTranslation();
   const mx = useMatrixClient();
   const useAuthentication = useMediaAuthentication();
   const roomName = room.name || room.getCanonicalAlias() || room.roomId;
@@ -177,7 +179,7 @@ function InviteCard({ room, userId, direct, compact, onNavigate }: InviteCardPro
               disabled={joining || leaving}
               before={leaving ? <Spinner variant="Secondary" size="100" /> : undefined}
             >
-              <Text size="B300">Decline</Text>
+              <Text size="B300">{t('inbox.decline', 'Decline')}</Text>
             </Button>
             <Button
               onClick={join}
@@ -188,7 +190,7 @@ function InviteCard({ room, userId, direct, compact, onNavigate }: InviteCardPro
               disabled={joining || leaving}
               before={joining ? <Spinner variant="Primary" fill="Soft" size="100" /> : undefined}
             >
-              <Text size="B300">Accept</Text>
+              <Text size="B300">{t('inbox.accept', 'Accept')}</Text>
             </Button>
           </Box>
         </Box>
@@ -198,6 +200,7 @@ function InviteCard({ room, userId, direct, compact, onNavigate }: InviteCardPro
 }
 
 export function Invites() {
+  const { t } = useTranslation();
   const mx = useMatrixClient();
   const userId = mx.getUserId()!;
   const mDirects = useAtomValue(mDirectAtom);
@@ -260,7 +263,7 @@ export function Invites() {
               <Box ref={containerRef} direction="Column" gap="600">
                 {directInvites.length > 0 && (
                   <Box direction="Column" gap="200">
-                    <Text size="H4">Direct Messages</Text>
+                    <Text size="H4">{t('inbox.directMessages', 'Direct Messages')}</Text>
                     <Box direction="Column" gap="100">
                       {directInvites.map((roomId) => renderInvite(roomId, true, navigateRoom))}
                     </Box>
@@ -268,7 +271,7 @@ export function Invites() {
                 )}
                 {spaceInvites.length > 0 && (
                   <Box direction="Column" gap="200">
-                    <Text size="H4">Spaces</Text>
+                    <Text size="H4">{t('inbox.spaces', 'Spaces')}</Text>
                     <Box direction="Column" gap="100">
                       {spaceInvites.map((roomId) => renderInvite(roomId, false, navigateSpace))}
                     </Box>
@@ -276,7 +279,7 @@ export function Invites() {
                 )}
                 {roomInvites.length > 0 && (
                   <Box direction="Column" gap="200">
-                    <Text size="H4">Rooms</Text>
+                    <Text size="H4">{t('inbox.rooms', 'Rooms')}</Text>
                     <Box direction="Column" gap="100">
                       {roomInvites.map((roomId) => renderInvite(roomId, false, navigateRoom))}
                     </Box>
@@ -292,7 +295,7 @@ export function Invites() {
                         direction="Column"
                         gap="200"
                       >
-                        <Text>No Pending Invitations</Text>
+                        <Text>{t('inbox.noPendingInvitations', 'No Pending Invitations')}</Text>
                         <Text size="T200">
                           You don&apos;t have any new pending invitations to display yet.
                         </Text>

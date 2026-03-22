@@ -1,4 +1,5 @@
 import React, { MouseEventHandler, forwardRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Room } from 'matrix-js-sdk';
 import {
   Avatar,
@@ -46,6 +47,7 @@ type RoomNavItemMenuProps = {
 };
 const RoomNavItemMenu = forwardRef<HTMLDivElement, RoomNavItemMenuProps>(
   ({ room, requestClose }, ref) => {
+    const { t } = useTranslation();
     const mx = useMatrixClient();
     const unread = useRoomUnread(room.roomId, roomToUnreadAtom);
     const powerLevels = usePowerLevels(room);
@@ -85,7 +87,7 @@ const RoomNavItemMenu = forwardRef<HTMLDivElement, RoomNavItemMenuProps>(
             disabled={!unread}
           >
             <Text style={{ flexGrow: 1 }} as="span" size="T300" truncate>
-              Mark as Read
+              {t('nav.markAsRead')}
             </Text>
           </MenuItem>
         </Box>
@@ -101,7 +103,7 @@ const RoomNavItemMenu = forwardRef<HTMLDivElement, RoomNavItemMenuProps>(
             disabled={!canInvite}
           >
             <Text style={{ flexGrow: 1 }} as="span" size="T300" truncate>
-              Invite
+              {t('roomMenu.invite')}
             </Text>
           </MenuItem>
           <MenuItem
@@ -111,7 +113,7 @@ const RoomNavItemMenu = forwardRef<HTMLDivElement, RoomNavItemMenuProps>(
             radii="300"
           >
             <Text style={{ flexGrow: 1 }} as="span" size="T300" truncate>
-              Copy Link
+              {t('roomMenu.copyLink')}
             </Text>
           </MenuItem>
           <MenuItem
@@ -121,7 +123,7 @@ const RoomNavItemMenu = forwardRef<HTMLDivElement, RoomNavItemMenuProps>(
             radii="300"
           >
             <Text style={{ flexGrow: 1 }} as="span" size="T300" truncate>
-              Room Settings
+              {t('roomMenu.roomSettings')}
             </Text>
           </MenuItem>
         </Box>
@@ -140,7 +142,7 @@ const RoomNavItemMenu = forwardRef<HTMLDivElement, RoomNavItemMenuProps>(
                   aria-pressed={promptLeave}
                 >
                   <Text style={{ flexGrow: 1 }} as="span" size="T300" truncate>
-                    Leave Room
+                    {t('roomMenu.leaveRoom')}
                   </Text>
                 </MenuItem>
                 {promptLeave && (

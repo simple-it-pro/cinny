@@ -1,4 +1,5 @@
 import React, { MouseEventHandler, forwardRef, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAtom, useAtomValue } from 'jotai';
 import {
   Avatar,
@@ -50,6 +51,7 @@ type DirectMenuProps = {
   requestClose: () => void;
 };
 const DirectMenu = forwardRef<HTMLDivElement, DirectMenuProps>(({ requestClose }, ref) => {
+  const { t } = useTranslation();
   const mx = useMatrixClient();
   const orphanRooms = useDirectRooms();
   const unread = useRoomsUnread(orphanRooms, roomToUnreadAtom);
@@ -71,7 +73,7 @@ const DirectMenu = forwardRef<HTMLDivElement, DirectMenuProps>(({ requestClose }
           aria-disabled={!unread}
         >
           <Text style={{ flexGrow: 1 }} as="span" size="T300" truncate>
-            Mark as Read
+            {t('nav.markAsRead')}
           </Text>
         </MenuItem>
       </Box>
@@ -80,6 +82,7 @@ const DirectMenu = forwardRef<HTMLDivElement, DirectMenuProps>(({ requestClose }
 });
 
 function DirectHeader() {
+  const { t } = useTranslation();
   const [menuAnchor, setMenuAnchor] = useState<RectCords>();
 
   const handleOpenMenu: MouseEventHandler<HTMLButtonElement> = (evt) => {
@@ -96,7 +99,7 @@ function DirectHeader() {
         <Box alignItems="Center" grow="Yes" gap="300">
           <Box grow="Yes">
             <Text size="H4" truncate>
-              Direct Messages
+              {t('nav.directMessages')}
             </Text>
           </Box>
           <Box>
@@ -132,24 +135,25 @@ function DirectHeader() {
 }
 
 function DirectEmpty() {
+  const { t } = useTranslation();
   return (
     <NavEmptyCenter>
       <NavEmptyLayout
         icon={<Icon size="600" src={Icons.Mention} />}
         title={
           <Text size="H5" align="Center">
-            No Direct Messages
+            {t('direct.noMessages')}
           </Text>
         }
         content={
           <Text size="T300" align="Center">
-            You do not have any direct messages yet.
+            {t('direct.noMessagesDescription')}
           </Text>
         }
         options={
           <Button variant="Secondary" size="300" onClick={() => openInviteUser()}>
             <Text size="B300" truncate>
-              Direct Message
+              {t('direct.directMessage')}
             </Text>
           </Button>
         }
@@ -160,6 +164,7 @@ function DirectEmpty() {
 
 const DEFAULT_CATEGORY_ID = makeNavCategoryId('direct', 'direct');
 export function Direct() {
+  const { t } = useTranslation();
   const mx = useMatrixClient();
   useNavToActivePathMapper('direct');
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -209,7 +214,7 @@ export function Direct() {
                       </Avatar>
                       <Box as="span" grow="Yes">
                         <Text as="span" size="Inherit" truncate>
-                          Create Chat
+                          {t('direct.createChat')}
                         </Text>
                       </Box>
                     </Box>
@@ -224,7 +229,7 @@ export function Direct() {
                   data-category-id={DEFAULT_CATEGORY_ID}
                   onClick={handleCategoryClick}
                 >
-                  Chats
+                  {t('direct.chats')}
                 </RoomNavCategoryButton>
               </NavCategoryHeader>
               <div

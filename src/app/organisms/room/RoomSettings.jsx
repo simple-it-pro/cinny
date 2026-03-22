@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './RoomSettings.scss';
+import i18next from 'i18next';
 
 import cons from '../../../client/state/cons';
 import navigation from '../../../client/state/navigation';
@@ -32,14 +33,14 @@ import IconButton from '../../atoms/button/IconButton';
 import { useMatrixClient } from '../../hooks/useMatrixClient';
 
 const tabText = {
-  GENERAL: 'General',
-  MEMBERS: 'Members',
-  EMOJIS: 'Emojis',
-  PERMISSIONS: 'Permissions',
-  SECURITY: 'Security',
+  get GENERAL() { return i18next.t('roomSettings.tabs.general', 'General'); },
+  get MEMBERS() { return i18next.t('roomSettings.tabs.members', 'Members'); },
+  get EMOJIS() { return i18next.t('roomSettings.tabs.emojis', 'Emojis'); },
+  get PERMISSIONS() { return i18next.t('roomSettings.tabs.permissions', 'Permissions'); },
+  get SECURITY() { return i18next.t('roomSettings.tabs.security', 'Security'); },
 };
 
-const tabItems = [
+const getTabItems = () => [
   {
     iconSrc: SettingsIC,
     text: tabText.GENERAL,
@@ -136,7 +137,8 @@ function useWindowToggle(setSelectedTab) {
   useEffect(() => {
     const openRoomSettings = (roomId, tab) => {
       setWindow({ roomId, tabText });
-      const tabItem = tabItems.find((item) => item.text === tab);
+      const currentTabItems = getTabItems();
+      const tabItem = currentTabItems.find((item) => item.text === tab);
       if (tabItem) setSelectedTab(tabItem);
     };
     navigation.on(cons.events.navigation.ROOM_SETTINGS_TOGGLED, openRoomSettings);
@@ -151,6 +153,7 @@ function useWindowToggle(setSelectedTab) {
 }
 
 function RoomSettings() {
+  const tabItems = getTabItems();
   const [selectedTab, setSelectedTab] = useState(tabItems[0]);
   const [window, requestClose] = useWindowToggle(setSelectedTab);
   const isOpen = window !== null;

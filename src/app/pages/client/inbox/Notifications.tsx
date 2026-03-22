@@ -1,5 +1,6 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { MouseEventHandler, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Avatar,
   Box,
@@ -391,7 +392,7 @@ function RoomNotificationsGroupComp({
               onClick={handleMarkAsRead}
               before={<Icon size="100" src={Icons.CheckTwice} />}
             >
-              <Text size="T200">Mark as Read</Text>
+              <Text size="T200">{t('inbox.markAsRead', 'Mark as Read')}</Text>
             </Chip>
           )}
         </Box>
@@ -453,7 +454,7 @@ function RoomNotificationsGroupComp({
                       variant="Secondary"
                       radii="400"
                     >
-                      <Text size="T200">Open</Text>
+                      <Text size="T200">{t('inbox.open', 'Open')}</Text>
                     </Chip>
                   </Box>
                 </Box>
@@ -489,6 +490,7 @@ const useNotificationsSearchParams = (
 const DEFAULT_REFRESH_MS = 7000;
 
 export function Notifications() {
+  const { t } = useTranslation();
   const mx = useMatrixClient();
   const [mediaAutoLoad] = useSetting(settingsAtom, 'mediaAutoLoad');
   const [urlPreview] = useSetting(settingsAtom, 'urlPreview');
@@ -588,7 +590,7 @@ export function Notifications() {
               <Box direction="Column" gap="200">
                 <Box ref={scrollTopAnchorRef} direction="Column" gap="100">
                   <span data-spacing-node />
-                  <Text size="L400">Filter</Text>
+                  <Text size="L400">{t('inbox.filter', 'Filter')}</Text>
                   <Box gap="200">
                     <Chip
                       onClick={() => setOnlyHighlighted(false)}
@@ -597,7 +599,7 @@ export function Notifications() {
                       before={!onlyHighlight && <Icon size="100" src={Icons.Check} />}
                       outlined
                     >
-                      <Text size="T200">All Notifications</Text>
+                      <Text size="T200">{t('inbox.allNotifications', 'All Notifications')}</Text>
                     </Chip>
                     <Chip
                       onClick={() => setOnlyHighlighted(true)}
@@ -606,7 +608,7 @@ export function Notifications() {
                       before={onlyHighlight && <Icon size="100" src={Icons.Check} />}
                       outlined
                     >
-                      <Text size="T200">Highlighted</Text>
+                      <Text size="T200">{t('inbox.highlighted', 'Highlighted')}</Text>
                     </Chip>
                   </Box>
                 </Box>
@@ -668,7 +670,7 @@ export function Notifications() {
                       direction="Column"
                       gap="200"
                     >
-                      <Text>No Notifications</Text>
+                      <Text>{t('inbox.noNotifications', 'No Notifications')}</Text>
                       <Text size="T200">
                         You don&apos;t have any new notifications to display yet.
                       </Text>
