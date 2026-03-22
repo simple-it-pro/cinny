@@ -120,8 +120,9 @@
     "reporting": "Reporting..."
   },
   "welcome": {
-    "title": "Welcome to Cinny",
-    "subtitle": "Yet another matrix client."
+    "title": "Welcome to Simple",
+    "subtitle": "Messenger by Simple IT",
+    "description": "A Russian messenger based on open-source technology. Chat with Telegram users or within Simple only. Servers in Russia — no blocks affect your communication."
   },
   "sync": {
     "connecting": "Connecting...",
@@ -295,6 +296,36 @@
     "allNotifications": "All Notifications",
     "highlighted": "Highlighted",
     "noNotifications": "No Notifications"
+  },
+  "createRoom": {
+    "visibilityTitle": "Visibility",
+    "visibility": "Visibility (who can join)",
+    "private": "Private",
+    "restricted": "Restricted",
+    "public": "Public",
+    "privateDesc": "Private (invite only)",
+    "restrictedDesc": "Restricted (space member can join)",
+    "publicDesc": "Public (anyone can join)",
+    "selectWhoCanJoin": "Select who can join this {{type}}.",
+    "space": "space",
+    "room": "room",
+    "spaceAddress": "Space address",
+    "roomAddress": "Room address",
+    "enableE2EE": "Enable end-to-end encryption",
+    "e2eeWarning": "You can't disable this later. Bridges & most bots won't work yet.",
+    "selectRole": "Select your role",
+    "admin": "Admin",
+    "founder": "Founder",
+    "roleDescription": "Selecting Admin sets 100 power level whereas Founder sets 101.",
+    "topicOptional": "Topic (optional)",
+    "spaceName": "Space name",
+    "roomName": "Room name",
+    "create": "Create",
+    "createSpace": "create space",
+    "createRoom": "create room",
+    "creating": "Creating {{type}}...",
+    "errorInvalidChars": "ERROR: Invalid characters in address",
+    "errorAddressInUse": "ERROR: This address is already in use"
   },
   "Organisms": {
     "RoomCommon": {
