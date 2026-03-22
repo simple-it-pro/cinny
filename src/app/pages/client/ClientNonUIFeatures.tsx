@@ -265,6 +265,74 @@ type ClientNonUIFeaturesProps = {
   children: ReactNode;
 };
 
+const VAPID_PUBLIC_KEY = 'BJq9rgAJhl5bG5NODk_hNiW-bMP-PnWgRcbeITunNlKiE9LftdZlBPWwAlUfYd_abyNKp07x5yj7onnuEx_zzq8';
+
+function urlBase64ToUint8Array(base64String: string): Uint8Array {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; i++) outputArray[i] = rawData.charCodeAt(i);
+  return outputArray;
+}
+
+function PushSubscription() {
+  const mx = useMatrixClient();
+
+  useEffect(() => {
+    async function setupPush() {
+      try {
+        if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+
+        const permission = await Notification.requestPermission();
+        if (permission !== 'granted') return;
+
+        const registration = await navigator.serviceWorker.ready;
+        let subscription = await registration.pushManager.getSubscription();
+
+        if (!subscription) {
+          subscription = await registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY),
+          });
+        }
+
+        const userId = mx.getUserId();
+        const baseUrl = mx.getHomeserverUrl();
+        const pushUrl = baseUrl.replace('/_matrix', '').replace(/\/$/, '') + '/push/subscribe';
+
+        await fetch(pushUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId, subscription: subscription.toJSON() }),
+        });
+
+        // Register HTTP pusher with Synapse
+        await mx.setPusher({
+          pushkey: userId!,
+          kind: 'http',
+          app_id: 'pro.simple-it.msg',
+          app_display_name: 'Simple Messenger',
+          device_display_name: 'Simple Web',
+          lang: navigator.language || 'ru',
+          data: {
+            url: baseUrl.replace('/_matrix', '').replace(/\/$/, '') + '/push/_matrix/push/v1/notify',
+          },
+          append: false,
+        } as any);
+
+        console.log('Push notifications enabled');
+      } catch (err) {
+        console.warn('Push setup failed:', err);
+      }
+    }
+
+    setupPush();
+  }, [mx]);
+
+  return null;
+}
+
 export function ClientNonUIFeatures({ children }: ClientNonUIFeaturesProps) {
   return (
     <>
@@ -273,6 +341,7 @@ export function ClientNonUIFeatures({ children }: ClientNonUIFeaturesProps) {
       <FaviconUpdater />
       <InviteNotifications />
       <MessageNotifications />
+      <PushSubscription />
       {children}
     </>
   );

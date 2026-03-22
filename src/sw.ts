@@ -31,6 +31,43 @@ self.addEventListener('activate', (event: ExtendableEvent) => {
   event.waitUntil(clients.claim());
 });
 
+// Push notification handler
+self.addEventListener('push', (event: PushEvent) => {
+  const data = event.data?.json() ?? {};
+  event.waitUntil(
+    self.registration.showNotification(data.title ?? 'Simple', {
+      body: data.body ?? 'Новое сообщение',
+      icon: data.icon ?? '/public/res/android/android-chrome-192x192.png',
+      badge: data.badge ?? '/public/res/android/android-chrome-72x72.png',
+      data: data.data,
+      tag: data.data?.roomId ?? 'simple-notification',
+    })
+  );
+});
+
+// Handle notification click — open the chat
+self.addEventListener('notificationclick', (event: NotificationEvent) => {
+  event.notification.close();
+  const roomId = event.notification.data?.roomId;
+
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+      // Focus existing window if available
+      for (const client of clientList) {
+        if ('focus' in client) {
+          client.focus();
+          if (roomId) {
+            client.postMessage({ type: 'navigate', roomId });
+          }
+          return;
+        }
+      }
+      // Open new window
+      return self.clients.openWindow('/');
+    })
+  );
+});
+
 self.addEventListener('fetch', (event: FetchEvent) => {
   const { url, method } = event.request;
   if (method !== 'GET') return;
