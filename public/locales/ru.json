@@ -207,6 +207,7 @@
       "yetAnotherMatrixClient": "Ещё один клиент для Matrix",
       "sourceCode": "Исходный код",
       "support": "Поддержать",
+      "description": "Мессенджер от Simple IT",
       "clearCacheReload": "Очистить кеш и перезагрузить",
       "credits": "Благодарности"
     },

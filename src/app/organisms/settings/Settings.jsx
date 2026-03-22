@@ -436,22 +436,18 @@ function AboutSection() {
       <div className="settings-about__card">
         <MenuHeader>{t('settings.about.application')}</MenuHeader>
         <div className="settings-about__branding">
-          <img width="60" height="60" src={CinnySVG} alt="Cinny logo" />
+          <img width="60" height="60" src={CinnySVG} alt="Simple logo" />
           <div>
             <Text variant="h2" weight="medium">
-              Cinny
+              Simple
               <span
                 className="text text-b3"
                 style={{ margin: '0 var(--sp-extra-tight)' }}
               >{`v${cons.version}`}</span>
             </Text>
-            <Text>{t('settings.about.yetAnotherMatrixClient')}</Text>
+            <Text>{t('settings.about.description', 'Messenger by Simple IT')}</Text>
 
             <div className="settings-about__btns">
-              <Button onClick={() => window.open('https://github.com/ajbura/cinny')}>
-                {t('settings.about.sourceCode')}
-              </Button>
-              <Button onClick={() => window.open('https://cinny.in/#sponsor')}>{t('settings.about.support')}</Button>
               <Button onClick={() => clearCacheAndReload(mx)} variant="danger">
                 {t('settings.about.clearCacheReload')}
               </Button>
