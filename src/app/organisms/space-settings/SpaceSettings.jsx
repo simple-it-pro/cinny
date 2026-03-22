@@ -121,8 +121,11 @@ function useWindowToggle(setSelectedTab) {
 
 function SpaceSettings() {
   const tabItems = getTabItems();
-  const [selectedTab, setSelectedTab] = useState(tabItems[0]);
-  const [window, requestClose] = useWindowToggle(setSelectedTab);
+  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
+  const [window, requestClose] = useWindowToggle((tab) => {
+    const idx = tabItems.findIndex((item) => item.text === tab?.text);
+    if (idx >= 0) setSelectedTabIndex(idx);
+  });
   const isOpen = window !== null;
   const roomId = window?.roomId;
 
@@ -130,7 +133,8 @@ function SpaceSettings() {
   const room = mx.getRoom(roomId);
 
   const handleTabChange = (tabItem) => {
-    setSelectedTab(tabItem);
+    const idx = tabItems.findIndex((item) => item.text === tabItem.text);
+    if (idx >= 0) setSelectedTabIndex(idx);
   };
 
   return (
@@ -151,14 +155,14 @@ function SpaceSettings() {
           <RoomProfile roomId={roomId} />
           <Tabs
             items={tabItems}
-            defaultSelected={tabItems.findIndex((tab) => tab.text === selectedTab.text)}
+            defaultSelected={selectedTabIndex}
             onSelect={handleTabChange}
           />
           <div className="space-settings__cards-wrapper">
-            {selectedTab.text === tabText.GENERAL && <GeneralSettings roomId={roomId} />}
-            {selectedTab.text === tabText.MEMBERS && <RoomMembers roomId={roomId} />}
-            {selectedTab.text === tabText.EMOJIS && <RoomEmojis roomId={roomId} />}
-            {selectedTab.text === tabText.PERMISSIONS && <RoomPermissions roomId={roomId} />}
+            {selectedTabIndex === 0 && <GeneralSettings roomId={roomId} />}
+            {selectedTabIndex === 1 && <RoomMembers roomId={roomId} />}
+            {selectedTabIndex === 2 && <RoomEmojis roomId={roomId} />}
+            {selectedTabIndex === 3 && <RoomPermissions roomId={roomId} />}
           </div>
         </div>
       )}
