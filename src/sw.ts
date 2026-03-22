@@ -49,21 +49,20 @@ self.addEventListener('push', (event: PushEvent) => {
 self.addEventListener('notificationclick', (event: NotificationEvent) => {
   event.notification.close();
   const roomId = event.notification.data?.roomId;
+  const urlPath = roomId ? `/#/room/${roomId}` : '/';
 
   event.waitUntil(
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
-      // Focus existing window if available
+      // Focus existing window and navigate
       for (const client of clientList) {
         if ('focus' in client) {
           client.focus();
-          if (roomId) {
-            client.postMessage({ type: 'navigate', roomId });
-          }
+          client.postMessage({ type: 'navigate', roomId });
           return;
         }
       }
-      // Open new window
-      return self.clients.openWindow('/');
+      // Open new window with room URL
+      return self.clients.openWindow(urlPath);
     })
   );
 });

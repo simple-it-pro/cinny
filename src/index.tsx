@@ -38,6 +38,10 @@ if ('serviceWorker' in navigator) {
         token,
       });
     }
+    if (event.data?.type === 'navigate' && event.data?.roomId) {
+      // Navigate to room from push notification click
+      window.location.hash = `#/room/${event.data.roomId}`;
+    }
   });
 }
 
