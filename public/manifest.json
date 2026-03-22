@@ -1,7 +1,7 @@
 {
-  "name": "Cinny",
-  "short_name": "Cinny",
-  "description": "Yet another matrix client",
+  "name": "Simple Messenger",
+  "short_name": "Simple",
+  "description": "Simple IT Messenger",
   "dir": "auto",
   "lang": "en-US",
   "display": "standalone",
