@@ -297,6 +297,15 @@
     "highlighted": "Важные",
     "noNotifications": "Нет уведомлений"
   },
+  "invite": {
+    "directMessage": "Личное сообщение",
+    "inviteTo": "Пригласить в {{name}}",
+    "nameOrUserId": "Имя или userId",
+    "search": "Поиск",
+    "noMatches": "Совпадений для \"{{name}}\" не найдено!",
+    "notFound": "{{name}} не найден!",
+    "error": "Что-то пошло не так!"
+  },
   "createRoom": {
     "visibilityTitle": "Видимость",
     "visibility": "Видимость (кто может присоединиться)",

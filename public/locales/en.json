@@ -297,6 +297,15 @@
     "highlighted": "Highlighted",
     "noNotifications": "No Notifications"
   },
+  "invite": {
+    "directMessage": "Direct message",
+    "inviteTo": "Invite to {{name}}",
+    "nameOrUserId": "Name or userId",
+    "search": "Search",
+    "noMatches": "No matches found for \"{{name}}\"!",
+    "notFound": "{{name}} not found!",
+    "error": "Something went wrong!"
+  },
   "createRoom": {
     "visibilityTitle": "Visibility",
     "visibility": "Visibility (who can join)",

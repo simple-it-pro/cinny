@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 import './InviteUser.scss';
 
@@ -21,6 +22,7 @@ import { useMatrixClient } from '../../hooks/useMatrixClient';
 import { useMediaAuthentication } from '../../hooks/useMediaAuthentication';
 
 function InviteUser({ isOpen, roomId, searchTerm, onRequestClose }) {
+  const { t } = useTranslation();
   const [isSearching, updateIsSearching] = useState(false);
   const [searchQuery, updateSearchQuery] = useState({});
   const [users, updateUsers] = useState([]);
@@ -85,7 +87,7 @@ function InviteUser({ isOpen, roomId, searchTerm, onRequestClose }) {
           },
         ]);
       } catch (e) {
-        updateSearchQuery({ error: `${inputUsername} not found!` });
+        updateSearchQuery({ error: t('invite.notFound', { name: inputUsername }) });
       }
     } else {
       try {
@@ -94,13 +96,13 @@ function InviteUser({ isOpen, roomId, searchTerm, onRequestClose }) {
           limit: 20,
         });
         if (result.results.length === 0) {
-          updateSearchQuery({ error: `No matches found for "${inputUsername}"!` });
+          updateSearchQuery({ error: t('invite.noMatches', { name: inputUsername }) });
           updateIsSearching(false);
           return;
         }
         updateUsers(result.results);
       } catch (e) {
-        updateSearchQuery({ error: 'Something went wrong!' });
+        updateSearchQuery({ error: t('invite.error', 'Something went wrong!') });
       }
     }
     updateIsSearching(false);
@@ -261,7 +263,7 @@ function InviteUser({ isOpen, roomId, searchTerm, onRequestClose }) {
   return (
     <PopupWindow
       isOpen={isOpen}
-      title={typeof roomId === 'string' ? `Invite to ${mx.getRoom(roomId).name}` : 'Direct message'}
+      title={typeof roomId === 'string' ? t('invite.inviteTo', { name: mx.getRoom(roomId).name }) : t('invite.directMessage', 'Direct message')}
       contentOptions={<IconButton src={CrossIC} onClick={onRequestClose} tooltip="Close" />}
       onRequestClose={onRequestClose}
     >
@@ -273,9 +275,9 @@ function InviteUser({ isOpen, roomId, searchTerm, onRequestClose }) {
             searchUser(usernameRef.current.value);
           }}
         >
-          <Input value={searchTerm} forwardRef={usernameRef} label="Name or userId" />
+          <Input value={searchTerm} forwardRef={usernameRef} label={t('invite.nameOrUserId', 'Name or userId')} />
           <Button disabled={isSearching} iconSrc={UserIC} variant="primary" type="submit">
-            Search
+            {t('invite.search', 'Search')}
           </Button>
         </form>
         <div className="invite-user__search-status">
