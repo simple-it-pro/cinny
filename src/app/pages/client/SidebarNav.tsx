@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { Icon, Icons, Scroll } from 'folds';
+import { useTranslation } from 'react-i18next';
 
 import {
   Sidebar,
@@ -22,6 +23,7 @@ import {
 import { openCreateRoom, openSearch } from '../../../client/action/navigation';
 
 export function SidebarNav() {
+  const { t } = useTranslation();
   const scrollRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -38,7 +40,7 @@ export function SidebarNav() {
             <SidebarStack>
               <ExploreTab />
               <SidebarItem>
-                <SidebarItemTooltip tooltip="Create Space">
+                <SidebarItemTooltip tooltip={t('nav.createSpace')}>
                   {(triggerRef) => (
                     <SidebarAvatar
                       as="button"
@@ -59,7 +61,7 @@ export function SidebarNav() {
             <SidebarStackSeparator />
             <SidebarStack>
               <SidebarItem>
-                <SidebarItemTooltip tooltip="Search">
+                <SidebarItemTooltip tooltip={t('nav.search')}>
                   {(triggerRef) => (
                     <SidebarAvatar
                       as="button"

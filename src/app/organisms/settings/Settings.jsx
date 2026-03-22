@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Input, toRem } from 'folds';
 import { isKeyHotkey } from 'is-hotkey';
 import './Settings.scss';
+import { useTranslation } from 'react-i18next';
 
+import i18next from 'i18next';
 import { clearCacheAndReload, logoutClient } from '../../../client/initMatrix';
 import cons from '../../../client/state/cons';
 import settings from '../../../client/state/settings';
@@ -49,6 +51,7 @@ import { KeySymbol } from '../../utils/key-symbol';
 import { useMatrixClient } from '../../hooks/useMatrixClient';
 
 function AppearanceSection() {
+  const { t } = useTranslation();
   const [, updateState] = useState({});
 
   const [enterForNewline, setEnterForNewline] = useSetting(settingsAtom, 'enterForNewline');
@@ -91,12 +94,39 @@ function AppearanceSection() {
     }
   };
 
+  const handleLanguageChange = (index) => {
+    const langs = ['en', 'ru'];
+    i18next.changeLanguage(langs[index]);
+    updateState({});
+  };
+
+  const getCurrentLangIndex = () => {
+    const lang = i18next.language?.substring(0, 2);
+    return lang === 'ru' ? 1 : 0;
+  };
+
   return (
     <div className="settings-appearance">
       <div className="settings-appearance__card">
-        <MenuHeader>Theme</MenuHeader>
+        <MenuHeader>{t('settings.language', 'Language')}</MenuHeader>
         <SettingTile
-          title="Follow system theme"
+          title={t('settings.languageSelect', 'Interface language')}
+          content={
+            <SegmentedControls
+              selected={getCurrentLangIndex()}
+              segments={[
+                { text: 'English' },
+                { text: 'Русский' },
+              ]}
+              onSelect={handleLanguageChange}
+            />
+          }
+        />
+      </div>
+      <div className="settings-appearance__card">
+        <MenuHeader>{t('settings.appearance.theme')}</MenuHeader>
+        <SettingTile
+          title={t('settings.appearance.followSystemTheme')}
           options={
             <Toggle
               isActive={settings.useSystemTheme}
@@ -106,18 +136,18 @@ function AppearanceSection() {
               }}
             />
           }
-          content={<Text variant="b3">Use light or dark mode based on the system settings.</Text>}
+          content={<Text variant="b3">{t('settings.appearance.followSystemThemeDescription')}</Text>}
         />
         <SettingTile
-          title="Theme"
+          title={t('settings.appearance.theme')}
           content={
             <SegmentedControls
               selected={settings.useSystemTheme ? -1 : settings.getThemeIndex()}
               segments={[
-                { text: 'Light' },
-                { text: 'Silver' },
-                { text: 'Dark' },
-                { text: 'Butter' },
+                { text: t('settings.appearance.themeLight') },
+                { text: t('settings.appearance.themeSilver') },
+                { text: t('settings.appearance.themeDark') },
+                { text: t('settings.appearance.themeButter') },
               ]}
               onSelect={(index) => {
                 if (settings.useSystemTheme) toggleSystemTheme();
@@ -128,14 +158,14 @@ function AppearanceSection() {
           }
         />
         <SettingTile
-          title="Use Twitter Emoji"
+          title={t('settings.appearance.useTwitterEmoji')}
           options={
             <Toggle isActive={twitterEmoji} onToggle={() => setTwitterEmoji(!twitterEmoji)} />
           }
-          content={<Text variant="b3">Use Twitter emoji instead of system emoji.</Text>}
+          content={<Text variant="b3">{t('settings.appearance.useTwitterEmojiDescription')}</Text>}
         />
         <SettingTile
-          title="Page Zoom"
+          title={t('settings.appearance.pageZoom')}
           options={
             <Input
               style={{ width: toRem(150) }}
@@ -153,35 +183,35 @@ function AppearanceSection() {
           }
           content={
             <Text variant="b3">
-              Change page zoom to scale user interface between 75% to 150%. Default: 100%
+              {t('settings.appearance.pageZoomDescription')}
             </Text>
           }
         />
       </div>
       <div className="settings-appearance__card">
-        <MenuHeader>Room messages</MenuHeader>
+        <MenuHeader>{t('settings.appearance.roomMessages')}</MenuHeader>
         <SettingTile
-          title="Message Layout"
+          title={t('settings.appearance.messageLayout')}
           content={
             <SegmentedControls
               selected={messageLayout}
-              segments={[{ text: 'Modern' }, { text: 'Compact' }, { text: 'Bubble' }]}
+              segments={[{ text: t('settings.appearance.layoutModern') }, { text: t('settings.appearance.layoutCompact') }, { text: t('settings.appearance.layoutBubble') }]}
               onSelect={(index) => setMessageLayout(index)}
             />
           }
         />
         <SettingTile
-          title="Message Spacing"
+          title={t('settings.appearance.messageSpacing')}
           content={
             <SegmentedControls
               selected={spacings.findIndex((s) => s === messageSpacing)}
               segments={[
-                { text: 'No' },
-                { text: 'XXS' },
-                { text: 'XS' },
-                { text: 'S' },
-                { text: 'M' },
-                { text: 'L' },
+                { text: t('settings.appearance.spacingNo') },
+                { text: t('settings.appearance.spacingXXS') },
+                { text: t('settings.appearance.spacingXS') },
+                { text: t('settings.appearance.spacingS') },
+                { text: t('settings.appearance.spacingM') },
+                { text: t('settings.appearance.spacingL') },
               ]}
               onSelect={(index) => {
                 setMessageSpacing(spacings[index]);
@@ -190,7 +220,7 @@ function AppearanceSection() {
           }
         />
         <SettingTile
-          title="Use ENTER for Newline"
+          title={t('settings.appearance.useEnterForNewline')}
           options={
             <Toggle
               isActive={enterForNewline}
@@ -198,18 +228,16 @@ function AppearanceSection() {
             />
           }
           content={
-            <Text variant="b3">{`Use ${
-              isMacOS() ? KeySymbol.Command : 'Ctrl'
-            } + ENTER to send message and ENTER for newline.`}</Text>
+            <Text variant="b3">{t('settings.appearance.useEnterForNewlineDescription', { modifier: isMacOS() ? KeySymbol.Command : 'Ctrl' })}</Text>
           }
         />
         <SettingTile
-          title="Markdown formatting"
+          title={t('settings.appearance.markdownFormatting')}
           options={<Toggle isActive={isMarkdown} onToggle={() => setIsMarkdown(!isMarkdown)} />}
-          content={<Text variant="b3">Format messages with markdown syntax before sending.</Text>}
+          content={<Text variant="b3">{t('settings.appearance.markdownFormattingDescription')}</Text>}
         />
         <SettingTile
-          title="Hide membership events"
+          title={t('settings.appearance.hideMembershipEvents')}
           options={
             <Toggle
               isActive={hideMembershipEvents}
@@ -218,13 +246,12 @@ function AppearanceSection() {
           }
           content={
             <Text variant="b3">
-              Hide membership change messages from room timeline. (Join, Leave, Invite, Kick and
-              Ban)
+              {t('settings.appearance.hideMembershipEventsDescription')}
             </Text>
           }
         />
         <SettingTile
-          title="Hide nick/avatar events"
+          title={t('settings.appearance.hideNickAvatarEvents')}
           options={
             <Toggle
               isActive={hideNickAvatarEvents}
@@ -232,39 +259,39 @@ function AppearanceSection() {
             />
           }
           content={
-            <Text variant="b3">Hide nick and avatar change messages from room timeline.</Text>
+            <Text variant="b3">{t('settings.appearance.hideNickAvatarEventsDescription')}</Text>
           }
         />
         <SettingTile
-          title="Disable media auto load"
+          title={t('settings.appearance.disableMediaAutoLoad')}
           options={
             <Toggle isActive={!mediaAutoLoad} onToggle={() => setMediaAutoLoad(!mediaAutoLoad)} />
           }
           content={
-            <Text variant="b3">Prevent images and videos from auto loading to save bandwidth.</Text>
+            <Text variant="b3">{t('settings.appearance.disableMediaAutoLoadDescription')}</Text>
           }
         />
         <SettingTile
-          title="Url Preview"
+          title={t('settings.appearance.urlPreview')}
           options={<Toggle isActive={urlPreview} onToggle={() => setUrlPreview(!urlPreview)} />}
-          content={<Text variant="b3">Show url preview for link in messages.</Text>}
+          content={<Text variant="b3">{t('settings.appearance.urlPreviewDescription')}</Text>}
         />
         <SettingTile
-          title="Url Preview in Encrypted Room"
+          title={t('settings.appearance.urlPreviewEncrypted')}
           options={
             <Toggle isActive={encUrlPreview} onToggle={() => setEncUrlPreview(!encUrlPreview)} />
           }
-          content={<Text variant="b3">Show url preview for link in encrypted messages.</Text>}
+          content={<Text variant="b3">{t('settings.appearance.urlPreviewEncryptedDescription')}</Text>}
         />
         <SettingTile
-          title="Show hidden events"
+          title={t('settings.appearance.showHiddenEvents')}
           options={
             <Toggle
               isActive={showHiddenEvents}
               onToggle={() => setShowHiddenEvents(!showHiddenEvents)}
             />
           }
-          content={<Text variant="b3">Show hidden state and message events.</Text>}
+          content={<Text variant="b3">{t('settings.appearance.showHiddenEventsDescription')}</Text>}
         />
       </div>
     </div>
@@ -272,6 +299,7 @@ function AppearanceSection() {
 }
 
 function NotificationsSection() {
+  const { t } = useTranslation();
   const notifPermission = usePermissionState(
     'notifications',
     window.Notification?.permission ?? 'denied'
@@ -286,13 +314,13 @@ function NotificationsSection() {
     if (window.Notification === undefined) {
       return (
         <Text className="settings-notifications__not-supported">
-          Not supported in this browser.
+          {t('settings.notifications.notSupported')}
         </Text>
       );
     }
 
     if (notifPermission === 'denied') {
-      return <Text>Permission Denied</Text>;
+      return <Text>{t('settings.notifications.permissionDenied')}</Text>;
     }
 
     if (notifPermission === 'granted') {
@@ -315,7 +343,7 @@ function NotificationsSection() {
           })
         }
       >
-        Request permission
+        {t('settings.notifications.requestPermission')}
       </Button>
     );
   };
@@ -323,21 +351,21 @@ function NotificationsSection() {
   return (
     <>
       <div className="settings-notifications">
-        <MenuHeader>Notification & Sound</MenuHeader>
+        <MenuHeader>{t('settings.notifications.sectionTitle')}</MenuHeader>
         <SettingTile
-          title="Desktop notification"
+          title={t('settings.notifications.desktopNotification')}
           options={renderOptions()}
-          content={<Text variant="b3">Show desktop notification when new messages arrive.</Text>}
+          content={<Text variant="b3">{t('settings.notifications.desktopNotificationDescription')}</Text>}
         />
         <SettingTile
-          title="Notification Sound"
+          title={t('settings.notifications.notificationSound')}
           options={
             <Toggle
               isActive={isNotificationSounds}
               onToggle={() => setIsNotificationSounds(!isNotificationSounds)}
             />
           }
-          content={<Text variant="b3">Play sound when new messages arrive.</Text>}
+          content={<Text variant="b3">{t('settings.notifications.notificationSoundDescription')}</Text>}
         />
       </div>
       <GlobalNotification />
@@ -361,37 +389,34 @@ function EmojiSection() {
 }
 
 function SecuritySection() {
+  const { t } = useTranslation();
   return (
     <div className="settings-security">
       <div className="settings-security__card">
-        <MenuHeader>Cross signing and backup</MenuHeader>
+        <MenuHeader>{t('settings.security.crossSigningAndBackup')}</MenuHeader>
         <CrossSigning />
         <KeyBackup />
       </div>
       <DeviceManage />
       <div className="settings-security__card">
-        <MenuHeader>Export/Import encryption keys</MenuHeader>
+        <MenuHeader>{t('settings.security.exportImportKeys')}</MenuHeader>
         <SettingTile
-          title="Export E2E room keys"
+          title={t('settings.security.exportE2EKeys')}
           content={
             <>
               <Text variant="b3">
-                Export end-to-end encryption room keys to decrypt old messages in other session. In
-                order to encrypt keys you need to set a password, which will be used while
-                importing.
+                {t('settings.security.exportE2EKeysDescription')}
               </Text>
               <ExportE2ERoomKeys />
             </>
           }
         />
         <SettingTile
-          title="Import E2E room keys"
+          title={t('settings.security.importE2EKeys')}
           content={
             <>
               <Text variant="b3">
-                {
-                  "To decrypt older messages, Export E2EE room keys from Element (Settings > Security & Privacy > Encryption > Cryptography) and import them here. Imported keys are encrypted so you'll have to enter the password you set in order to decrypt it."
-                }
+                {t('settings.security.importE2EKeysDescription')}
               </Text>
               <ImportE2ERoomKeys />
             </>
@@ -403,12 +428,13 @@ function SecuritySection() {
 }
 
 function AboutSection() {
+  const { t } = useTranslation();
   const mx = useMatrixClient();
 
   return (
     <div className="settings-about">
       <div className="settings-about__card">
-        <MenuHeader>Application</MenuHeader>
+        <MenuHeader>{t('settings.about.application')}</MenuHeader>
         <div className="settings-about__branding">
           <img width="60" height="60" src={CinnySVG} alt="Cinny logo" />
           <div>
@@ -419,22 +445,22 @@ function AboutSection() {
                 style={{ margin: '0 var(--sp-extra-tight)' }}
               >{`v${cons.version}`}</span>
             </Text>
-            <Text>Yet another matrix client</Text>
+            <Text>{t('settings.about.yetAnotherMatrixClient')}</Text>
 
             <div className="settings-about__btns">
               <Button onClick={() => window.open('https://github.com/ajbura/cinny')}>
-                Source code
+                {t('settings.about.sourceCode')}
               </Button>
-              <Button onClick={() => window.open('https://cinny.in/#sponsor')}>Support</Button>
+              <Button onClick={() => window.open('https://cinny.in/#sponsor')}>{t('settings.about.support')}</Button>
               <Button onClick={() => clearCacheAndReload(mx)} variant="danger">
-                Clear cache & reload
+                {t('settings.about.clearCacheReload')}
               </Button>
             </div>
           </div>
         </div>
       </div>
       <div className="settings-about__card">
-        <MenuHeader>Credits</MenuHeader>
+        <MenuHeader>{t('settings.about.credits')}</MenuHeader>
         <div className="settings-about__credits">
           <ul>
             <li>
@@ -605,6 +631,7 @@ function useWindowToggle(setSelectedTab) {
 }
 
 function Settings() {
+  const { t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState(tabItems[0]);
   const [isOpen, requestClose] = useWindowToggle(setSelectedTab);
   const mx = useMatrixClient();
@@ -613,9 +640,9 @@ function Settings() {
   const handleLogout = async () => {
     if (
       await confirmDialog(
-        'Logout',
-        'Are you sure that you want to logout your session?',
-        'Logout',
+        t('settings.logoutConfirmTitle'),
+        t('settings.logoutConfirmMessage'),
+        t('settings.logout'),
         'danger'
       )
     ) {
@@ -629,13 +656,13 @@ function Settings() {
       className="settings-window"
       title={
         <Text variant="s1" weight="medium" primary>
-          Settings
+          {t('settings.title')}
         </Text>
       }
       contentOptions={
         <>
           <Button variant="danger" iconSrc={PowerIC} onClick={handleLogout}>
-            Logout
+            {t('settings.logout')}
           </Button>
           <IconButton src={CrossIC} onClick={requestClose} tooltip="Close" />
         </>

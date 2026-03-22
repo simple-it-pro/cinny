@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Text } from 'folds';
+import { useTranslation } from 'react-i18next';
 import { UserEvent, UserEventHandlerMap } from 'matrix-js-sdk';
 import { SidebarItem, SidebarItemTooltip, SidebarAvatar } from '../../../components/sidebar';
 import { openSettings } from '../../../../client/action/navigation';
@@ -14,6 +15,7 @@ type UserProfile = {
   displayname?: string;
 };
 export function UserTab() {
+  const { t } = useTranslation();
   const mx = useMatrixClient();
   const useAuthentication = useMediaAuthentication();
   const userId = mx.getUserId()!;
@@ -49,7 +51,7 @@ export function UserTab() {
 
   return (
     <SidebarItem>
-      <SidebarItemTooltip tooltip="User Settings">
+      <SidebarItemTooltip tooltip={t('nav.userSettings')}>
         {(triggerRef) => (
           <SidebarAvatar as="button" ref={triggerRef} onClick={() => openSettings()}>
             <UserAvatar

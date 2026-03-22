@@ -1,5 +1,6 @@
 import React from 'react';
 import { Badge, color, Icon, Icons, Text } from 'folds';
+import { useTranslation } from 'react-i18next';
 import { openSettings } from '../../../../client/action/navigation';
 import { isCrossVerified } from '../../../../util/matrixUtil';
 import {
@@ -14,6 +15,7 @@ import { useMatrixClient } from '../../../hooks/useMatrixClient';
 import * as css from './UnverifiedTab.css';
 
 export function UnverifiedTab() {
+  const { t } = useTranslation();
   const mx = useMatrixClient();
   const deviceList = useDeviceList();
   const unverified = deviceList?.filter(
@@ -24,7 +26,7 @@ export function UnverifiedTab() {
 
   return (
     <SidebarItem className={css.UnverifiedTab}>
-      <SidebarItemTooltip tooltip="Unverified Sessions">
+      <SidebarItemTooltip tooltip={t('nav.unverifiedSessions')}>
         {(triggerRef) => (
           <SidebarAvatar
             className={css.UnverifiedAvatar}

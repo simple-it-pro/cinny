@@ -68,6 +68,7 @@ import { stopPropagation } from '../../../utils/keyboard';
 import { getMatrixToRoomEvent } from '../../../plugins/matrix-to';
 import { getViaServers } from '../../../plugins/via-servers';
 import { useMediaAuthentication } from '../../../hooks/useMediaAuthentication';
+import { useTranslation } from 'react-i18next';
 
 export type ReactionHandler = (keyOrMxc: string, shortcode: string) => void;
 
@@ -119,6 +120,7 @@ export const MessageAllReactionItem = as<
     onClose?: () => void;
   }
 >(({ room, relations, onClose, ...props }, ref) => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
@@ -165,7 +167,7 @@ export const MessageAllReactionItem = as<
         aria-pressed={open}
       >
         <Text className={css.MessageMenuItemText} as="span" size="T300" truncate>
-          View Reactions
+          {t('chat.viewReactions')}
         </Text>
       </MenuItem>
     </>
@@ -180,6 +182,7 @@ export const MessageReadReceiptItem = as<
     onClose?: () => void;
   }
 >(({ room, eventId, onClose, ...props }, ref) => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
@@ -215,7 +218,7 @@ export const MessageReadReceiptItem = as<
         aria-pressed={open}
       >
         <Text className={css.MessageMenuItemText} as="span" size="T300" truncate>
-          Read Receipts
+          {t('chat.readReceipts')}
         </Text>
       </MenuItem>
     </>
@@ -230,6 +233,7 @@ export const MessageSourceCodeItem = as<
     onClose?: () => void;
   }
 >(({ room, mEvent, onClose, ...props }, ref) => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
 
   const getContent = (evt: MatrixEvent) =>
@@ -298,7 +302,7 @@ export const MessageSourceCodeItem = as<
         aria-pressed={open}
       >
         <Text className={css.MessageMenuItemText} as="span" size="T300" truncate>
-          View Source
+          {t('chat.viewSource')}
         </Text>
       </MenuItem>
     </>
@@ -313,6 +317,7 @@ export const MessageCopyLinkItem = as<
     onClose?: () => void;
   }
 >(({ room, mEvent, onClose, ...props }, ref) => {
+  const { t } = useTranslation();
   const mx = useMatrixClient();
 
   const handleCopy = () => {
@@ -334,7 +339,7 @@ export const MessageCopyLinkItem = as<
       ref={ref}
     >
       <Text className={css.MessageMenuItemText} as="span" size="T300" truncate>
-        Copy Link
+        {t('chat.copyLink')}
       </Text>
     </MenuItem>
   );
@@ -348,6 +353,7 @@ export const MessageDeleteItem = as<
     onClose?: () => void;
   }
 >(({ room, mEvent, onClose, ...props }, ref) => {
+  const { t } = useTranslation();
   const mx = useMatrixClient();
   const [open, setOpen] = useState(false);
 
@@ -401,7 +407,7 @@ export const MessageDeleteItem = as<
                 size="500"
               >
                 <Box grow="Yes">
-                  <Text size="H4">Delete Message</Text>
+                  <Text size="H4">{t('chat.deleteMessage')}</Text>
                 </Box>
                 <IconButton size="300" onClick={handleClose} radii="300">
                   <Icon src={Icons.Cross} />
@@ -415,19 +421,19 @@ export const MessageDeleteItem = as<
                 gap="400"
               >
                 <Text priority="400">
-                  This action is irreversible! Are you sure that you want to delete this message?
+                  {t('chat.deleteConfirmation')}
                 </Text>
                 <Box direction="Column" gap="100">
                   <Text size="L400">
-                    Reason{' '}
+                    {t('common.reason')}{' '}
                     <Text as="span" size="T200">
-                      (optional)
+                      ({t('common.optional')})
                     </Text>
                   </Text>
                   <Input name="reasonInput" variant="Background" />
                   {deleteState.status === AsyncStatus.Error && (
                     <Text style={{ color: color.Critical.Main }} size="T300">
-                      Failed to delete message! Please try again.
+                      {t('chat.deleteError')}
                     </Text>
                   )}
                 </Box>
@@ -442,7 +448,7 @@ export const MessageDeleteItem = as<
                   aria-disabled={deleteState.status === AsyncStatus.Loading}
                 >
                   <Text size="B400">
-                    {deleteState.status === AsyncStatus.Loading ? 'Deleting...' : 'Delete'}
+                    {deleteState.status === AsyncStatus.Loading ? t('chat.deleting') : t('common.delete')}
                   </Text>
                 </Button>
               </Box>
@@ -462,7 +468,7 @@ export const MessageDeleteItem = as<
         ref={ref}
       >
         <Text className={css.MessageMenuItemText} as="span" size="T300" truncate>
-          Delete
+          {t('common.delete')}
         </Text>
       </Button>
     </>
@@ -477,6 +483,7 @@ export const MessageReportItem = as<
     onClose?: () => void;
   }
 >(({ room, mEvent, onClose, ...props }, ref) => {
+  const { t } = useTranslation();
   const mx = useMatrixClient();
   const [open, setOpen] = useState(false);
 
@@ -531,7 +538,7 @@ export const MessageReportItem = as<
                 size="500"
               >
                 <Box grow="Yes">
-                  <Text size="H4">Report Message</Text>
+                  <Text size="H4">{t('chat.reportMessage')}</Text>
                 </Box>
                 <IconButton size="300" onClick={handleClose} radii="300">
                   <Icon src={Icons.Cross} />
@@ -545,20 +552,19 @@ export const MessageReportItem = as<
                 gap="400"
               >
                 <Text priority="400">
-                  Report this message to server, which may then notify the appropriate people to
-                  take action.
+                  {t('chat.reportDescription')}
                 </Text>
                 <Box direction="Column" gap="100">
-                  <Text size="L400">Reason</Text>
+                  <Text size="L400">{t('common.reason')}</Text>
                   <Input name="reasonInput" variant="Background" required />
                   {reportState.status === AsyncStatus.Error && (
                     <Text style={{ color: color.Critical.Main }} size="T300">
-                      Failed to report message! Please try again.
+                      {t('chat.reportError')}
                     </Text>
                   )}
                   {reportState.status === AsyncStatus.Success && (
                     <Text style={{ color: color.Success.Main }} size="T300">
-                      Message has been reported to server.
+                      {t('chat.reportSuccess')}
                     </Text>
                   )}
                 </Box>
@@ -576,7 +582,7 @@ export const MessageReportItem = as<
                   }
                 >
                   <Text size="B400">
-                    {reportState.status === AsyncStatus.Loading ? 'Reporting...' : 'Report'}
+                    {reportState.status === AsyncStatus.Loading ? t('chat.reporting') : t('common.report')}
                   </Text>
                 </Button>
               </Box>
@@ -596,7 +602,7 @@ export const MessageReportItem = as<
         ref={ref}
       >
         <Text className={css.MessageMenuItemText} as="span" size="T300" truncate>
-          Report
+          {t('common.report')}
         </Text>
       </Button>
     </>
@@ -650,6 +656,7 @@ export const Message = as<'div', MessageProps>(
     },
     ref
   ) => {
+    const { t } = useTranslation();
     const mx = useMatrixClient();
     const useAuthentication = useMediaAuthentication();
     const senderId = mEvent.getSender() ?? '';
@@ -891,7 +898,7 @@ export const Message = as<'div', MessageProps>(
                                 size="T300"
                                 truncate
                               >
-                                Add Reaction
+                                {t('chat.addReaction')}
                               </Text>
                             </MenuItem>
                           )}
@@ -918,7 +925,7 @@ export const Message = as<'div', MessageProps>(
                               size="T300"
                               truncate
                             >
-                              Reply
+                              {t('chat.reply')}
                             </Text>
                           </MenuItem>
                           {canEditEvent(mx, mEvent) && onEditId && (
@@ -938,7 +945,7 @@ export const Message = as<'div', MessageProps>(
                                 size="T300"
                                 truncate
                               >
-                                Edit Message
+                                {t('chat.editMessageAction')}
                               </Text>
                             </MenuItem>
                           )}
