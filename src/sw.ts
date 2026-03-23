@@ -50,7 +50,7 @@ self.addEventListener('notificationclick', (event: NotificationEvent) => {
   event.notification.close();
   const roomId = event.notification.data?.roomId;
   const baseUrl = self.registration.scope.replace(/\/$/, '');
-  const targetUrl = roomId ? `${baseUrl}/#/room/${roomId}` : `${baseUrl}/`;
+  const targetUrl = roomId ? `${baseUrl}/home/${encodeURIComponent(roomId)}/` : `${baseUrl}/`;
 
   event.waitUntil(
     self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
